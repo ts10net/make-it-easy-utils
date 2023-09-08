@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookmarkBuddy - handy scripts</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: left;
+            color: #b7acc5;
+        }
+        h2 {
+            color: black;
+        }
+        .link {
+            margin: 20px;
+        }
+        .link a {
+            text-decoration: none;
+            color: #0077cc;
+        }
+        .link p {
+            margin: 5px 0;
+        }
+        .copy-button {
+            background-color: #0077cc;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .script-input {
+            width: 100%;
+            height: 100px;
+            pointer-events: none;
+        }
+        .flash-message {
+            display: none;
+            background-color: #0077cc;
+            color: #fff;
+            padding: 10px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            opacity: 0.9;
+        }
+        .top-details {
+            color: chocolate;
+        }
+    </style>
+</head>
+<body>
+    <h1>BookmarkBuddy</h1>
+    <h2>Collection of short scripts which can be used in bookmarklets to help with your frequent needs</h2>
+    <p class="top-details">Drag and drop a link on Chrome's bookmark bar to create a new bookmark or manually create a new bookmark by pasting given script in its url. Modify scripts as per your needs.</p>
+
+    <div class="link">
+        <a href='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate < 10) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate + 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()' target="_blank">
+            <h3>YouTube.Speed++</h3>
+        </a>
+        <p>To increase speed of a YouTube video being played</p>
+        <button class="copy-button" onclick="copyTextAreaToClipboard('scriptInput-01')">Copy</button>
+        <textarea id="scriptInput-01" class="script-input" placeholder='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate < 10) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate + 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()'></textarea>
+    </div>
+
+    <div class="link">
+        <a href='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate > 0) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate - 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()' target="_blank">
+            <h3>YouTube.Speed--</h3>            
+        </a>
+        <p>To decrease speed of a YouTube video being played</p>
+        <button class="copy-button" onclick="copyTextAreaToClipboard('scriptInput-02')">Copy</button>
+        <textarea id="scriptInput-02" class="script-input" placeholder='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate > 0) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate - 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()'></textarea>
+    </div>
+
+    <!-- Add more links as needed -->
+
+    <div class="flash-message" id="flashMessage">Link copied to clipboard!</div>
+
+    <script>
+        function copyToClipboard(text) {
+            var input = document.createElement('input');
+            input.setAttribute('value', text);
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            
+            // Show the flash message
+            var flashMessage = document.getElementById('flashMessage');
+            flashMessage.style.display = 'block';
+
+            // Hide the flash message after 3 seconds
+            setTimeout(function() {
+                flashMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        function copyTextAreaToClipboard(textAreaId) {
+            var textArea = document.getElementById(textAreaId);
+            var textToCopy = textArea.placeholder;   
+            this.copyToClipboard(textToCopy);
+        }
+    </script>
+</body>
+</html>
