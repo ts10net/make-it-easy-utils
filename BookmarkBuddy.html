@@ -79,7 +79,7 @@
 
     <!-- Add more links as needed -->
 
-    <div class="flash-message" id="flashMessage">Link copied to clipboard!</div>
+    <div class="flash-message" id="flashMessage"></div>
 
     <script>
         function copyToClipboard(text) {
@@ -90,20 +90,25 @@
             document.execCommand('copy');
             document.body.removeChild(input);
             
-            // Show the flash message
-            var flashMessage = document.getElementById('flashMessage');
-            flashMessage.style.display = 'block';
-
-            // Hide the flash message after 3 seconds
-            setTimeout(function() {
-                flashMessage.style.display = 'none';
-            }, 3000);
+            this.flashMessage('Link copied to clipboard!');
         }
 
         function copyTextAreaToClipboard(textAreaId) {
             var textArea = document.getElementById(textAreaId);
             var textToCopy = textArea.placeholder;   
             this.copyToClipboard(textToCopy);
+        }
+
+        function flashMessage(text) {
+            // Show the flash message
+            var flashMsg = document.getElementById('flashMessage');
+            flashMsg.innerText = text;
+            flashMsg.style.display = 'block';
+
+            // Hide the flash message after 3 seconds
+            setTimeout(function() {
+                flashMsg.style.display = 'none';
+            }, 3000);
         }
     </script>
 </body>
