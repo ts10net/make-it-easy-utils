@@ -17,7 +17,7 @@
             color: black;
         }
         .link {
-            margin: 20px;
+            margin: 5px;
         }
         .link a {
             text-decoration: none;
@@ -52,6 +52,9 @@
         .top-details {
             color: chocolate;
         }
+        .container {
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -59,29 +62,68 @@
     <h2>Collection of short scripts which can be used in bookmarklets to help with your frequent needs</h2>
     <p class="top-details">Drag and drop a link on Chrome's bookmark bar to create a new bookmark or manually create a new bookmark by pasting given script in its url. Modify scripts as per your needs.</p>
 
-    <div class="link">
-        <a href='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate < 10) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate + 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()' target="_blank">
-            <h3>YouTube.Speed++</h3>
-        </a>
-        <p>To increase speed of a YouTube video being played</p>
-        <button class="copy-button" onclick="copyTextAreaToClipboard('scriptInput-01')">Copy</button>
-        <textarea id="scriptInput-01" class="script-input" placeholder='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate < 10) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate + 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()'></textarea>
+    <div id="linkList" class="link">
+        <!-- Links will be dynamically generated here -->
     </div>
-
-    <div class="link">
-        <a href='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate > 0) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate - 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()' target="_blank">
-            <h3>YouTube.Speed--</h3>            
-        </a>
-        <p>To decrease speed of a YouTube video being played</p>
-        <button class="copy-button" onclick="copyTextAreaToClipboard('scriptInput-02')">Copy</button>
-        <textarea id="scriptInput-02" class="script-input" placeholder='javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate > 0) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate - 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()'></textarea>
-    </div>
-
-    <!-- Add more links as needed -->
 
     <div class="flash-message" id="flashMessage"></div>
 
     <script>
+        var keyValueList = [
+            // key-value pairs for each script
+            
+            { key: 'YouTube.Speed++', value: { url: 'javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate < 10) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate + 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()', description: 'To increase speed of a YouTube video being played' } },
+            { key: 'YouTube.Speed--', value: { url: 'javascript:(function(){document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate = (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate > 0) ? (document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate - 0.25):document.getElementsByClassName("video-stream html5-main-video")[0].playbackRate;})()', description: 'To decrease speed of a YouTube video being played' } },
+        ];
+
+        // Function to dynamically generate links
+        function generateLinks() {
+            var linkList = document.getElementById('linkList');
+            
+            // Loop through the key-value list and create links
+            for (var i = 0; i < keyValueList.length; i++) {
+                var linkData = keyValueList[i];
+
+                // Create outer div
+                var linkDiv = document.createElement('div');
+                linkDiv.id =  'container-' + (i + 1);
+                linkDiv.className = 'container';
+
+                var linkElement = document.createElement('a');
+                linkElement.textContent = linkData.key;
+                linkElement.href = linkData.value.url;
+                linkElement.target = '_blank'; // To open links in a new tab/window
+
+                // Create the description element
+                var pElement = document.createElement('p');
+                pElement.innerText = linkData.value.description;
+
+                // Create the button element
+                var buttonElement = document.createElement('button');
+                buttonElement.textContent = 'Copy';
+                buttonElement.className = 'copy-button';
+                buttonElement.onclick = function() {
+                    copyTextAreaToClipboard(this.getAttribute('data-textarea-id'));
+                };
+                buttonElement.setAttribute('data-textarea-id', 'scriptInput-' + (i + 1));
+
+                // Create the textarea element
+                var textareaElement = document.createElement('textarea');
+                textareaElement.id = 'scriptInput-' + (i + 1);
+                textareaElement.className = 'script-input';
+                textareaElement.placeholder = linkData.value.url;
+
+                // Append link, button, and textarea elements to linkList
+                
+                linkDiv.appendChild(linkElement);
+                linkDiv.appendChild(pElement);
+                linkDiv.appendChild(document.createElement('br'));
+                linkDiv.appendChild(buttonElement);
+                linkDiv.appendChild(textareaElement);
+                linkList.appendChild(linkDiv);
+            }
+        }
+
         function copyToClipboard(text) {
             var input = document.createElement('input');
             input.setAttribute('value', text);
@@ -110,6 +152,9 @@
                 flashMsg.style.display = 'none';
             }, 3000);
         }
+
+        // Call the function to generate links when the page loads
+        generateLinks();
     </script>
 </body>
 </html>
